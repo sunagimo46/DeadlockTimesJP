@@ -46,3 +46,41 @@ def fetch_recent_changes(days: int = 3, limit: int = 20) -> list[dict]:
         print(f"[Wiki] 取得に失敗: {e}")
 
     return changes
+
+
+def search_pages(query: str, limit: int = 10) -> list[dict]:
+    """Deadlock Wiki でキーワード検索を行う"""
+    results = []
+
+    try:
+        resp = requests.get(
+            API_URL,
+            params={
+                "action": "query",
+                "list": "search",
+                "srsearch": query,
+                "srnamespace": "0",
+                "srlimit": limit,
+                "format": "json",
+            },
+            timeout=10,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+        import re
+
+        for item in data.get("query", {}).get("search", []):
+            title = item.get("title", "")
+            snippet = item.get("snippet", "")
+            snippet = re.sub(r"<[^>]+>", "", snippet)
+            results.append({
+                "source": "Wiki",
+                "title": title,
+                "url": f"https://deadlock.wiki/wiki/{title.replace(' ', '_')}",
+                "snippet": snippet,
+            })
+    except Exception as e:
+        print(f"[Wiki] 検索に失敗: {e}")
+
+    return results

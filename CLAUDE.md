@@ -59,3 +59,13 @@ draft: false
 - Deadlock Wiki: https://deadlock.wiki/
 - Reddit: https://www.reddit.com/r/DeadlockTheGame/
 - YouTube チャンネル: Eidorian, Deathy, MastYT, Midknighttxt, poshypop
+
+## リサーチベース記事作成ルール
+
+Issueに「リサーチ結果」コメントがある場合:
+
+- リサーチ結果のYouTube動画、Reddit投稿、Wiki記事の内容を参考にする
+- 複数ソースの情報を統合し、独自の視点でまとめる
+- 参考元のURLは記事末尾に「## 参考リンク」セクションとしてまとめる
+- 情報の優先度: Wiki（正確性）> Reddit（実戦知見）> YouTube（最新メタ）
+- Issueの「カテゴリ」チェックを確認し、適切なcategoryをフロントマターに設定する

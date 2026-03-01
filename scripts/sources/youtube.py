@@ -38,3 +38,31 @@ def fetch_recent_videos(days: int = 3) -> list[dict]:
             print(f"[YouTube] {name} の取得に失敗: {e}")
 
     return videos
+
+
+def search_videos(query: str, days: int = 90) -> list[dict]:
+    """各チャンネルのRSSフィードからキーワードに一致する動画を検索する"""
+    cutoff = datetime.now(tz=timezone.utc) - timedelta(days=days)
+    keywords = [kw.strip().lower() for kw in query.split(",") if kw.strip()]
+    videos = []
+
+    for name, channel_id in CHANNELS.items():
+        try:
+            feed = feedparser.parse(RSS_URL.format(channel_id=channel_id))
+            for entry in feed.entries:
+                published = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
+                if published < cutoff:
+                    continue
+                title_lower = entry.title.lower()
+                if any(kw in title_lower for kw in keywords):
+                    videos.append({
+                        "source": "YouTube",
+                        "channel": name,
+                        "title": entry.title,
+                        "url": entry.link,
+                        "published": published.isoformat(),
+                    })
+        except Exception as e:
+            print(f"[YouTube] {name} の検索に失敗: {e}")
+
+    return videos

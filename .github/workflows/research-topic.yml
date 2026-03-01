@@ -1,0 +1,50 @@
+name: トピックリサーチ
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  research:
+    if: contains(github.event.issue.labels.*.name, 'research-request')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 依存パッケージのインストール
+        run: pip install -r scripts/requirements.txt
+
+      - name: トピック抽出とリサーチ実行
+        run: |
+          TOPIC=$(gh issue view ${{ github.event.issue.number }} --json body -q '.body' | python3 -c "
+          import sys, re
+          body = sys.stdin.read()
+          m = re.search(r'## トピック\s*\n(.+)', body)
+          print(m.group(1).strip() if m else '')
+          ")
+
+          KEYWORDS=$(gh issue view ${{ github.event.issue.number }} --json body -q '.body' | python3 -c "
+          import sys, re
+          body = sys.stdin.read()
+          m = re.search(r'## 検索キーワード\s*\n(.+)', body)
+          print(m.group(1).strip() if m else '')
+          ")
+
+          if [ -z "$TOPIC" ]; then
+            echo "トピックが見つかりません"
+            exit 1
+          fi
+
+          cd scripts
+          python research.py \
+            --topic "$TOPIC" \
+            --keywords "$KEYWORDS" \
+            --issue-number ${{ github.event.issue.number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
