@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://deadlock-guide.netlify.app/sitemap-index.xml

@@ -1,0 +1,51 @@
+---
+import JsonLd from "./JsonLd.astro"
+
+interface Props {
+  title: string
+  description: string
+  url: string
+  publishedDate: Date
+  modifiedDate?: Date
+  tags: string[]
+  category: string
+}
+
+const { title, description, url, publishedDate, modifiedDate, tags, category } =
+  Astro.props
+
+const siteUrl = "https://deadlock-guide.netlify.app"
+
+const blogPostingData: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description: description,
+  url: url,
+  datePublished: publishedDate.toISOString(),
+  ...(modifiedDate ? { dateModified: modifiedDate.toISOString() } : {}),
+  inLanguage: "ja",
+  keywords: tags.join(", "),
+  articleSection: category,
+  isPartOf: {
+    "@type": "Blog",
+    name: "Deadlock攻略ブログ",
+    url: siteUrl,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Deadlock攻略ブログ",
+    url: siteUrl,
+    logo: {
+      "@type": "ImageObject",
+      url: `${siteUrl}/favicon.svg`,
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": url,
+  },
+}
+---
+
+<JsonLd data={blogPostingData} />

@@ -1,4 +1,6 @@
 ---
+import { CATEGORY_LABELS, CATEGORY_COLORS } from "../lib/constants"
+
 interface Props {
   id: string
   title: string
@@ -11,22 +13,6 @@ interface Props {
 
 const { id, title, description, pubDate, category, tags } = Astro.props
 
-const categoryLabels: Record<string, string> = {
-  "hero-guide": "ヒーロー攻略",
-  "patch-notes": "パッチノート",
-  meta: "メタ考察",
-  "item-guide": "アイテムガイド",
-  tips: "Tips",
-}
-
-const categoryColors: Record<string, string> = {
-  "hero-guide": "text-hero-guide",
-  "patch-notes": "text-patch-notes",
-  meta: "text-meta",
-  "item-guide": "text-item-guide",
-  tips: "text-tips",
-}
-
 const formattedDate = pubDate.toLocaleDateString("ja-JP", {
   year: "numeric",
   month: "long",
@@ -37,12 +23,12 @@ const formattedDate = pubDate.toLocaleDateString("ja-JP", {
 <article
   class="bg-bg-card rounded-lg border border-border hover:border-border-hover transition-colors p-6"
 >
-  <a href={`/blog/${id}`} class="block">
+  <a href={`/blog/${id}`} class="block mb-4">
     <div class="flex items-center gap-3 mb-3">
       <span
-        class={`text-xs font-semibold ${categoryColors[category] ?? "text-text-secondary"}`}
+        class={`text-xs font-semibold ${CATEGORY_COLORS[category] ?? "text-text-secondary"}`}
       >
-        {categoryLabels[category] ?? category}
+        {CATEGORY_LABELS[category] ?? category}
       </span>
       <time class="text-xs text-text-muted" datetime={pubDate.toISOString()}>
         {formattedDate}
@@ -53,17 +39,20 @@ const formattedDate = pubDate.toLocaleDateString("ja-JP", {
     >
       {title}
     </h2>
-    <p class="text-sm text-text-secondary line-clamp-2 mb-4">
+    <p class="text-sm text-text-secondary line-clamp-2">
       {description}
     </p>
-    <div class="flex flex-wrap gap-2">
-      {
-        tags.map((tag) => (
-          <span class="text-xs bg-accent-subtle text-accent px-2 py-1 rounded">
-            {tag}
-          </span>
-        ))
-      }
-    </div>
   </a>
+  <div class="flex flex-wrap gap-2">
+    {
+      tags.map((tag) => (
+        <a
+          href={`/blog/tags/${tag}`}
+          class="text-xs bg-accent-subtle text-accent px-2 py-1 rounded hover:bg-accent hover:text-bg-primary transition-colors"
+        >
+          {tag}
+        </a>
+      ))
+    }
+  </div>
 </article>
