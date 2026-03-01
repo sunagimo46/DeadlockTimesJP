@@ -7,7 +7,7 @@ on:
     types: [opened, labeled]
 
 jobs:
-  claude:
+  generate:
     if: |
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'claude'))
@@ -16,25 +16,28 @@ jobs:
       contents: write
       pull-requests: write
       issues: write
-      id-token: write
     steps:
       - uses: actions/checkout@v4
-
-      - uses: anthropics/claude-code-action@v1
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          trigger_phrase: "@claude"
-          additional_instructions: |
-            ## GitHub Actions 環境における制約
+          fetch-depth: 0
 
-            この環境では外部URL（YouTube、Deadlock Wiki、Reddit など）への直接アクセスは
-            利用できません。WebFetch や WebSearch ツールは使用しないでください。
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-            ## 記事作成の手順
+      - name: 依存パッケージのインストール
+        run: pip install -r scripts/requirements.txt
 
-            1. まず Issue の本文とコメントをすべて確認する
-            2. 「リサーチ結果」コメントがある場合はその内容を参考情報として使用する
-            3. リサーチ結果がない場合は、以下のようにユーザーに案内する：
-               - `research-request` ラベルで新しい Issue を作成してリサーチを先に実行するよう伝える
-               - または Issue コメントに参考URLや情報を直接貼り付けてもらうよう伝える
-            4. CLAUDE.md のルールに従って日本語で記事を作成する
+      - name: git ユーザー設定
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 記事生成
+        run: python scripts/generate_article.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          EVENT_NAME: ${{ github.event_name }}
