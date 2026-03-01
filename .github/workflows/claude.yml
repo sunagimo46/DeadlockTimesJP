@@ -24,3 +24,17 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           trigger_phrase: "@claude"
+          additional_instructions: |
+            ## GitHub Actions 環境における制約
+
+            この環境では外部URL（YouTube、Deadlock Wiki、Reddit など）への直接アクセスは
+            利用できません。WebFetch や WebSearch ツールは使用しないでください。
+
+            ## 記事作成の手順
+
+            1. まず Issue の本文とコメントをすべて確認する
+            2. 「リサーチ結果」コメントがある場合はその内容を参考情報として使用する
+            3. リサーチ結果がない場合は、以下のようにユーザーに案内する：
+               - `research-request` ラベルで新しい Issue を作成してリサーチを先に実行するよう伝える
+               - または Issue コメントに参考URLや情報を直接貼り付けてもらうよう伝える
+            4. CLAUDE.md のルールに従って日本語で記事を作成する
