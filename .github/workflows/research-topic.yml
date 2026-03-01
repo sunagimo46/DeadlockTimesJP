@@ -11,7 +11,7 @@ jobs:
     if: |
       (github.event_name == 'issues' && github.event.action == 'opened' && contains(github.event.issue.labels.*.name, 'research-request')) ||
       (github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == 'research-request') ||
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/research') && contains(github.event.issue.labels.*.name, 'research-request'))
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/research') && (contains(github.event.issue.labels.*.name, 'research-request') || contains(github.event.issue.labels.*.name, 'article-request')))
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -30,7 +30,7 @@ jobs:
           TOPIC=$(gh issue view ${{ github.event.issue.number }} --json body -q '.body' | python3 -c "
           import sys, re
           body = sys.stdin.read()
-          m = re.search(r'#{2,3} トピック\s*\n\n(.+)', body)
+          m = re.search(r'#{2,3} (?:記事の)?トピック\s*\n\n(.+)', body)
           print(m.group(1).strip() if m else '')
           ")
 
@@ -42,8 +42,8 @@ jobs:
           ")
 
           if [ -z "$TOPIC" ]; then
-            echo "トピックが見つかりません"
-            exit 1
+            TOPIC=$(gh issue view ${{ github.event.issue.number }} --json title -q '.title')
+            echo "トピックフィールドが見つからないため Issue タイトルを使用します: $TOPIC"
           fi
 
           cd scripts
