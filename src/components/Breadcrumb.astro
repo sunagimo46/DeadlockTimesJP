@@ -1,5 +1,6 @@
 ---
 import JsonLd from "./JsonLd.astro"
+import { SITE_URL } from "../lib/constants"
 
 interface BreadcrumbItem {
   name: string
@@ -11,7 +12,6 @@ interface Props {
 }
 
 const { items } = Astro.props
-const siteUrl = "https://deadlock-guide.netlify.app"
 
 const breadcrumbListData: Record<string, unknown> = {
   "@context": "https://schema.org",
@@ -20,7 +20,7 @@ const breadcrumbListData: Record<string, unknown> = {
     "@type": "ListItem",
     position: index + 1,
     name: item.name,
-    ...(item.href ? { item: `${siteUrl}${item.href}` } : {}),
+    ...(item.href ? { item: `${SITE_URL}${item.href}` } : {}),
   })),
 }
 ---

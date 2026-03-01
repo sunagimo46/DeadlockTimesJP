@@ -1,9 +1,11 @@
 ---
+import { CATEGORY_LABELS } from "../lib/constants"
+
 const navItems = [
   { label: "ホーム", href: "/" },
   { label: "記事一覧", href: "/blog" },
-  { label: "ヒーロー攻略", href: "/blog/category/hero-guide" },
-  { label: "パッチノート", href: "/blog/category/patch-notes" },
+  { label: CATEGORY_LABELS["hero-guide"], href: "/blog/category/hero-guide" },
+  { label: CATEGORY_LABELS["patch-notes"], href: "/blog/category/patch-notes" },
 ]
 ---
 

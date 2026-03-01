@@ -1,5 +1,6 @@
 ---
 import JsonLd from "./JsonLd.astro"
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "../lib/constants"
 
 interface Props {
   title: string
@@ -12,15 +13,12 @@ interface Props {
   tags?: string[]
 }
 
-const siteUrl = "https://deadlock-guide.netlify.app"
-const siteName = "Deadlock攻略ブログ"
-
 const {
   title,
   description,
   canonical = Astro.url.href,
   ogType = "website",
-  ogImage = `${siteUrl}/images/og-default.png`,
+  ogImage = `${SITE_URL}/images/og-default.png`,
   publishedTime,
   modifiedTime,
   tags = [],
@@ -37,7 +35,7 @@ const {
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
 <meta property="og:locale" content="ja_JP" />
-<meta property="og:site_name" content={siteName} />
+<meta property="og:site_name" content={SITE_NAME} />
 
 {
   ogType === "article" && publishedTime && (
@@ -65,10 +63,9 @@ const {
   data={{
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: siteName,
-    url: siteUrl,
+    name: SITE_NAME,
+    url: SITE_URL,
     inLanguage: "ja",
-    description:
-      "Valveの新作ヒーローシューター「Deadlock」の攻略情報、最新メタ、ヒーローガイド、パッチノート解説",
+    description: SITE_DESCRIPTION,
   }}
 />

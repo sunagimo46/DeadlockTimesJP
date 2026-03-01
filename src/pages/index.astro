@@ -1,15 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import BlogCard from "../components/BlogCard.astro"
-import { getCollection } from "astro:content"
+import { getPublishedPosts, sortPostsByDate } from "../lib/posts"
 
-const allPosts = await getCollection("blog", ({ data }) => {
-  return import.meta.env.PROD ? data.draft !== true : true
-})
-
-const recentPosts = allPosts
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 6)
+const allPosts = await getPublishedPosts()
+const recentPosts = sortPostsByDate(allPosts).slice(0, 6)
 ---
 
 <Layout title="ホーム">

@@ -2,11 +2,12 @@
 import Layout from "../../../layouts/Layout.astro"
 import BlogCard from "../../../components/BlogCard.astro"
 import Breadcrumb from "../../../components/Breadcrumb.astro"
-import { getCollection } from "astro:content"
+import { getPublishedPosts, sortPostsByDate } from "../../../lib/posts"
 import {
   ALL_CATEGORIES,
   CATEGORY_LABELS,
   CATEGORY_DESCRIPTIONS,
+  SITE_NAME,
 } from "../../../lib/constants"
 
 export async function getStaticPaths() {
@@ -19,19 +20,15 @@ const { category } = Astro.params
 const categoryLabel = CATEGORY_LABELS[category] ?? category
 const categoryDescription = CATEGORY_DESCRIPTIONS[category] ?? ""
 
-const allPosts = await getCollection("blog", ({ data }) => {
-  const isPublished = import.meta.env.PROD ? data.draft !== true : true
-  return isPublished && data.category === category
-})
-
-const sortedPosts = [...allPosts].sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+const allPosts = await getPublishedPosts()
+const sortedPosts = sortPostsByDate(
+  allPosts.filter((post) => post.data.category === category),
 )
 ---
 
 <Layout
   title={`${categoryLabel}の記事一覧`}
-  description={`Deadlock攻略ブログの${categoryLabel}カテゴリの記事一覧。${categoryDescription}`}
+  description={`${SITE_NAME}の${categoryLabel}カテゴリの記事一覧。${categoryDescription}`}
 >
   <Breadcrumb
     items={[
@@ -46,9 +43,7 @@ const sortedPosts = [...allPosts].sort(
 
   {
     sortedPosts.length === 0 ? (
-      <p class="text-text-muted">
-        このカテゴリにはまだ記事がありません。
-      </p>
+      <p class="text-text-muted">このカテゴリにはまだ記事がありません。</p>
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sortedPosts.map((post) => (

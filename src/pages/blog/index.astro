@@ -1,23 +1,15 @@
 ---
 import Layout from "../../layouts/Layout.astro"
 import BlogCard from "../../components/BlogCard.astro"
-import { getCollection } from "astro:content"
+import { getPublishedPosts, sortPostsByDate } from "../../lib/posts"
+import { ALL_CATEGORIES, CATEGORY_LABELS } from "../../lib/constants"
 
-const allPosts = await getCollection("blog", ({ data }) => {
-  return import.meta.env.PROD ? data.draft !== true : true
-})
-
-const sortedPosts = allPosts.sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-)
+const allPosts = await getPublishedPosts()
+const sortedPosts = sortPostsByDate(allPosts)
 
 const categories = [
-  { value: "all", label: "すべて" },
-  { value: "hero-guide", label: "ヒーロー攻略" },
-  { value: "patch-notes", label: "パッチノート" },
-  { value: "meta", label: "メタ考察" },
-  { value: "item-guide", label: "アイテムガイド" },
-  { value: "tips", label: "Tips" },
+  { value: "all" as const, label: "すべて" },
+  ...ALL_CATEGORIES.map((cat) => ({ value: cat, label: CATEGORY_LABELS[cat] })),
 ]
 ---
 
@@ -27,9 +19,12 @@ const categories = [
   <div class="flex flex-wrap gap-2 mb-8">
     {
       categories.map((cat) => (
-        <span class="px-3 py-1 text-sm rounded-full border border-border text-text-secondary hover:border-accent hover:text-accent cursor-pointer transition-colors">
+        <a
+          href={cat.value === "all" ? "/blog" : `/blog/category/${cat.value}`}
+          class="px-3 py-1 text-sm rounded-full border border-border text-text-secondary hover:border-accent hover:text-accent transition-colors"
+        >
           {cat.label}
-        </span>
+        </a>
       ))
     }
   </div>

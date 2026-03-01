@@ -1,21 +1,16 @@
 import rss from "@astrojs/rss"
-import { getCollection } from "astro:content"
 import type { APIRoute } from "astro"
+import { getPublishedPosts, sortPostsByDate } from "../lib/posts"
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "../lib/constants"
 
 export const GET: APIRoute = async (context) => {
-  const posts = await getCollection("blog", ({ data }) => {
-    return data.draft !== true
-  })
-
-  const sortedPosts = [...posts].sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-  )
+  const posts = await getPublishedPosts()
+  const sortedPosts = sortPostsByDate(posts)
 
   return rss({
-    title: "Deadlock攻略ブログ",
-    description:
-      "Valveの新作ヒーローシューター「Deadlock」の攻略情報、最新メタ、ヒーローガイド、パッチノート解説",
-    site: context.site?.toString() ?? "https://deadlock-guide.netlify.app",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    site: context.site?.toString() ?? SITE_URL,
     items: sortedPosts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.pubDate,
