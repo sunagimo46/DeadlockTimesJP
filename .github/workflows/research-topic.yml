@@ -27,14 +27,14 @@ jobs:
           TOPIC=$(gh issue view ${{ github.event.issue.number }} --json body -q '.body' | python3 -c "
           import sys, re
           body = sys.stdin.read()
-          m = re.search(r'## トピック\s*\n(.+)', body)
+          m = re.search(r'#{2,3} トピック\s*\n(.+)', body)
           print(m.group(1).strip() if m else '')
           ")
 
           KEYWORDS=$(gh issue view ${{ github.event.issue.number }} --json body -q '.body' | python3 -c "
           import sys, re
           body = sys.stdin.read()
-          m = re.search(r'## 検索キーワード\s*\n(.+)', body)
+          m = re.search(r'#{2,3} 検索キーワード\s*\n(.+)', body)
           print(m.group(1).strip() if m else '')
           ")
 

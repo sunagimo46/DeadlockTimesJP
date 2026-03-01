@@ -1,0 +1,38 @@
+name: リサーチリクエスト
+description: トピックを指定して参考情報を自動収集する
+title: "[リサーチ] "
+labels:
+  - research-request
+body:
+  - type: input
+    id: topic
+    attributes:
+      label: トピック
+      description: リサーチしたいテーマを記載してください
+      placeholder: 例：レーンガイド、Viscous攻略
+    validations:
+      required: true
+
+  - type: input
+    id: keywords
+    attributes:
+      label: 検索キーワード
+      description: 英語の検索キーワード（カンマ区切り）
+      placeholder: 例：lane guide,laning phase
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: category
+    attributes:
+      label: カテゴリ
+      options:
+        - label: ヒーロー攻略 (hero-guide)
+        - label: パッチノート解説 (patch-notes)
+        - label: 立ち回り考察 (tactics)
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 補足
+      description: その他の要望や方向性

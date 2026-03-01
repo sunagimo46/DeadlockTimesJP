@@ -1,0 +1,35 @@
+name: 記事作成リクエスト
+description: Deadlock攻略記事の作成を依頼する
+title: "[記事リクエスト] "
+labels:
+  - article-request
+body:
+  - type: input
+    id: topic
+    attributes:
+      label: 記事のトピック
+      description: 書いてほしい記事のテーマを記載してください
+      placeholder: 例：Viscous入門ガイド、レーンの基本
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: category
+    attributes:
+      label: カテゴリ
+      options:
+        - label: ヒーロー攻略 (hero-guide)
+        - label: パッチノート解説 (patch-notes)
+        - label: 立ち回り考察 (tactics)
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 参考情報
+      description: 参考にしてほしいURL、動画、投稿などがあれば記載してください
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 補足
+      description: その他の要望があれば記載してください
