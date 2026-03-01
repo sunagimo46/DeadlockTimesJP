@@ -323,6 +323,9 @@ def create_pr(
     """git commit + push + gh pr create で PR を作成し、PR URL を返す"""
     branch_name = f"article/{slug}-issue-{issue_number}"
 
+    # リモートブランチが残っている場合は削除（再実行時の競合対策）
+    _run_git_optional(["push", "origin", "--delete", branch_name])
+
     # ブランチ作成
     _run_git(["checkout", "-b", branch_name])
 
@@ -375,6 +378,17 @@ def _run_git(args: list[str]) -> None:
             result.stdout,
             result.stderr,
         )
+    if result.stdout:
+        print(f"git {args[0]}: {result.stdout.strip()}")
+
+
+def _run_git_optional(args: list[str]) -> None:
+    """git コマンドを実行する（失敗しても無視する）"""
+    result = subprocess.run(
+        ["git"] + args,
+        capture_output=True,
+        text=True,
+    )
     if result.stdout:
         print(f"git {args[0]}: {result.stdout.strip()}")
 
