@@ -1,10 +1,9 @@
 ---
 import Layout from "../../../../layouts/Layout.astro"
-import BlogCard from "../../../../components/BlogCard.astro"
+import BlogCardList from "../../../../components/BlogCardList.astro"
 import Breadcrumb from "../../../../components/Breadcrumb.astro"
 import Pagination from "../../../../components/Pagination.astro"
 import { getPublishedPosts, sortPostsByDate } from "../../../../lib/posts"
-import { calculateReadingTime } from "../../../../lib/reading-time"
 import {
   ALL_CATEGORIES,
   CATEGORY_LABELS,
@@ -50,22 +49,7 @@ const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE)
     sortedPosts.length === 0 ? (
       <p class="text-text-muted">このカテゴリにはまだ記事がありません。</p>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {pagedPosts.map((post) => (
-          <BlogCard
-            id={post.id}
-            title={post.data.title}
-            description={post.data.description}
-            pubDate={post.data.pubDate}
-            category={post.data.category}
-            tags={post.data.tags}
-            hero={post.data.hero}
-            readingTime={
-              post.body ? calculateReadingTime(post.body) : undefined
-            }
-          />
-        ))}
-      </div>
+      <BlogCardList posts={pagedPosts} />
     )
   }
 

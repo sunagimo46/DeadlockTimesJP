@@ -10,9 +10,10 @@ interface Props {
   modifiedDate?: Date
   tags: string[]
   category: string
+  entryId: string
 }
 
-const { title, description, url, publishedDate, modifiedDate, tags, category } =
+const { title, description, url, publishedDate, modifiedDate, tags, category, entryId } =
   Astro.props
 
 const blogPostingData: Record<string, unknown> = {
@@ -43,6 +44,12 @@ const blogPostingData: Record<string, unknown> = {
       "@type": "ImageObject",
       url: `${SITE_URL}/favicon.svg`,
     },
+  },
+  image: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/og/${entryId}.png`,
+    width: 1200,
+    height: 630,
   },
   mainEntityOfPage: {
     "@type": "WebPage",

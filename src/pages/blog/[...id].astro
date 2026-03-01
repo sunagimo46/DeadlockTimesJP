@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content"
 import BlogPost from "../../layouts/BlogPost.astro"
-import { getPublishedPosts } from "../../lib/posts"
+import { getPublishedPosts, getAdjacentPosts } from "../../lib/posts"
 import { getRelatedPosts } from "../../lib/related-posts"
 import { calculateReadingTime } from "../../lib/reading-time"
 
@@ -21,6 +21,7 @@ const { Content, headings } = await render(post)
 const readingTime = post.body ? calculateReadingTime(post.body) : undefined
 const allPosts = await getPublishedPosts()
 const relatedPosts = getRelatedPosts(post, allPosts)
+const { prev: prevPost, next: nextPost } = getAdjacentPosts(post, allPosts)
 ---
 
 <BlogPost
@@ -28,6 +29,8 @@ const relatedPosts = getRelatedPosts(post, allPosts)
   headings={headings}
   readingTime={readingTime}
   relatedPosts={relatedPosts}
+  prevPost={prevPost}
+  nextPost={nextPost}
 >
   <Content />
 </BlogPost>

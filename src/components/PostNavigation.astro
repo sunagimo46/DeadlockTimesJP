@@ -1,0 +1,50 @@
+---
+import type { AdjacentPost } from "../lib/posts"
+
+interface Props {
+  prevPost?: AdjacentPost
+  nextPost?: AdjacentPost
+}
+
+const { prevPost, nextPost } = Astro.props
+---
+
+{
+  (prevPost || nextPost) && (
+    <nav
+      class="flex justify-between gap-4 mt-10 pt-8 border-t border-border"
+      aria-label="前後の記事"
+    >
+      {prevPost ? (
+        <a
+          href={`/blog/${prevPost.id}`}
+          class="group flex-1 min-w-0 text-left"
+        >
+          <span class="text-xs text-text-muted group-hover:text-accent transition-colors">
+            &larr; 前の記事
+          </span>
+          <p class="text-sm text-text-secondary group-hover:text-text-primary transition-colors truncate mt-1">
+            {prevPost.title}
+          </p>
+        </a>
+      ) : (
+        <div class="flex-1" />
+      )}
+      {nextPost ? (
+        <a
+          href={`/blog/${nextPost.id}`}
+          class="group flex-1 min-w-0 text-right"
+        >
+          <span class="text-xs text-text-muted group-hover:text-accent transition-colors">
+            次の記事 &rarr;
+          </span>
+          <p class="text-sm text-text-secondary group-hover:text-text-primary transition-colors truncate mt-1">
+            {nextPost.title}
+          </p>
+        </a>
+      ) : (
+        <div class="flex-1" />
+      )}
+    </nav>
+  )
+}
