@@ -9,6 +9,8 @@
 import argparse
 import io
 import sys
+import time
+import xml.etree.ElementTree as ET
 from datetime import datetime
 from pathlib import Path
 
@@ -50,37 +52,53 @@ def fetch_video_title(video_id: str) -> str:
     return video_id
 
 
-def fetch_full_transcript(video_id: str) -> str:
-    """全文字幕を取得する（文字数制限なし）"""
-    api = YouTubeTranscriptApi()
-    transcript_list = api.list(video_id)
+def fetch_full_transcript(video_id: str, max_retries: int = 2) -> str:
+    """全文字幕を取得する（文字数制限なし）。XMLパースエラー時はリトライする"""
+    last_error: Exception | None = None
 
-    # 優先言語順に字幕を取得
-    transcript = None
-    for lang in TRANSCRIPT_LANGUAGES:
+    for attempt in range(max_retries + 1):
         try:
-            transcript = transcript_list.find_transcript([lang])
-            break
-        except NoTranscriptFound:
-            continue
+            api = YouTubeTranscriptApi()
+            transcript_list = api.list(video_id)
 
-    # 手動字幕がなければ自動生成字幕を試みる
-    if transcript is None:
-        try:
-            transcript = transcript_list.find_generated_transcript(TRANSCRIPT_LANGUAGES)
-        except NoTranscriptFound:
-            # それでもなければ最初に見つかるものを使う
-            transcript = next(iter(transcript_list), None)
+            # 優先言語順に字幕を取得
+            transcript = None
+            for lang in TRANSCRIPT_LANGUAGES:
+                try:
+                    transcript = transcript_list.find_transcript([lang])
+                    break
+                except NoTranscriptFound:
+                    continue
 
-    if transcript is None:
-        raise NoTranscriptFound(video_id, TRANSCRIPT_LANGUAGES, [])
+            # 手動字幕がなければ自動生成字幕を試みる
+            if transcript is None:
+                try:
+                    transcript = transcript_list.find_generated_transcript(TRANSCRIPT_LANGUAGES)
+                except NoTranscriptFound:
+                    # それでもなければ最初に見つかるものを使う
+                    transcript = next(iter(transcript_list), None)
 
-    snippets = transcript.fetch()
+            if transcript is None:
+                raise NoTranscriptFound(video_id, TRANSCRIPT_LANGUAGES, [])
 
-    def get_text(s: object) -> str:
-        return s.text if hasattr(s, "text") else s["text"]  # type: ignore[attr-defined]
+            snippets = transcript.fetch()
 
-    return " ".join(get_text(s) for s in snippets)
+            def get_text(s: object) -> str:
+                return s.text if hasattr(s, "text") else s["text"]  # type: ignore[attr-defined]
+
+            return " ".join(get_text(s) for s in snippets)
+
+        except ET.ParseError as e:
+            last_error = e
+            if attempt < max_retries:
+                wait = (attempt + 1) * 5
+                print(f"  XMLパースエラー（リトライ {attempt + 1}/{max_retries}、{wait}秒後...）")
+                time.sleep(wait)
+
+    raise RuntimeError(
+        f"YouTubeからのレスポンスのパースに失敗しました（{max_retries + 1}回試行）。\n"
+        "YouTube側のレート制限の可能性があります。しばらく待ってから再実行してください。"
+    ) from last_error
 
 
 def save_transcript(url: str, output_dir: Path) -> Path:
@@ -141,13 +159,16 @@ def main() -> None:
         print(f"エラー: {e}", file=sys.stderr)
         sys.exit(1)
     except TranscriptsDisabled:
-        print(f"エラー: この動画は字幕が無効になっています", file=sys.stderr)
+        print("エラー: この動画は字幕が無効になっています", file=sys.stderr)
         sys.exit(1)
     except NoTranscriptFound:
-        print(f"エラー: 字幕が見つかりませんでした（英語・日本語字幕が存在しない可能性があります）", file=sys.stderr)
+        print("エラー: 字幕が見つかりませんでした（英語・日本語字幕が存在しない可能性があります）", file=sys.stderr)
+        sys.exit(1)
+    except RuntimeError as e:
+        print(f"エラー: {e}", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"予期しないエラー: {e}", file=sys.stderr)
+        print(f"予期しないエラー: {type(e).__name__}: {e}", file=sys.stderr)
         sys.exit(1)
 
 
