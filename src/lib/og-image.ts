@@ -112,7 +112,7 @@ export async function generateOgImage(
                       color: "#6b7280",
                       fontSize: "20px",
                     },
-                    children: "deadlock-guide.netlify.app",
+                    children: "deadlocktimes.jp",
                   },
                 },
               ],

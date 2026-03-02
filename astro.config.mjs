@@ -7,7 +7,7 @@ import tailwindcss from "@tailwindcss/vite"
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://deadlock-guide.netlify.app",
+  site: "https://deadlocktimes.jp",
   integrations: [react(), mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

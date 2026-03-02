@@ -18,7 +18,7 @@ interface Props {
 
 const {
   title,
-  description = "Deadlock攻略ブログ - 最新メタ情報、ヒーローガイド、パッチノート解説",
+  description = "DeadlockTimesJP - Deadlock攻略ブログ | 最新メタ情報、ヒーローガイド、パッチノート解説",
   ogType = "website",
   ogImage,
   publishedTime,
@@ -26,7 +26,7 @@ const {
   tags = [],
 } = Astro.props
 
-const fullTitle = `${title} | Deadlock攻略ブログ`
+const fullTitle = `${title} | DeadlockTimesJP`
 ---
 
 <!doctype html>
@@ -39,7 +39,7 @@ const fullTitle = `${title} | Deadlock攻略ブログ`
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Deadlock攻略ブログ RSS"
+      title="DeadlockTimesJP RSS"
       href="/rss.xml"
     />
     <title>{fullTitle}</title>

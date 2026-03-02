@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /pagefind/
 
-Sitemap: https://deadlock-guide.netlify.app/sitemap-index.xml
+Sitemap: https://deadlocktimes.jp/sitemap-index.xml

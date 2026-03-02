@@ -33,7 +33,8 @@ export const CATEGORY_DESCRIPTIONS: Record<Category, string> = {
 export const POSTS_PER_PAGE = 12
 
 /** サイト共通定数 */
-export const SITE_URL = "https://deadlock-guide.netlify.app"
-export const SITE_NAME = "Deadlock攻略ブログ"
+export const SITE_URL = "https://deadlocktimes.jp"
+export const SITE_NAME = "DeadlockTimesJP"
+export const SITE_SUBTITLE = "Deadlock攻略ブログ"
 export const SITE_DESCRIPTION =
   "Valveの新作ヒーローシューター「Deadlock」の攻略情報、最新メタ、ヒーローガイド、パッチノート解説"
