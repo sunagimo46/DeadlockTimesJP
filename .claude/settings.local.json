@@ -4,7 +4,8 @@
       "Bash(npm create:*)",
       "Bash(*)",
       "WebFetch(domain:docs.astro.build)",
-      "WebFetch(domain:www.youtube.com)"
+      "WebFetch(domain:www.youtube.com)",
+      "WebFetch(domain:deadlock.wiki)"
     ]
   }
 }
