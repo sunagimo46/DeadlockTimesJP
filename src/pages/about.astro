@@ -1,0 +1,160 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout
+  title="このブログについて"
+  description="DeadlockTimesJP 運営者のプロフィール。Deadlockの攻略情報を発信するブログと、ほぼ毎日配信しているYouTubeチャンネルについて紹介します。"
+>
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8">
+      このブログについて
+    </h1>
+
+    <!-- プロフィールカード -->
+    <section class="bg-bg-card border border-border rounded-2xl p-8 mb-10">
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <img
+          src="/icon.jpg"
+          alt="sunagimo46 のアイコン"
+          class="w-24 h-24 rounded-full border-2 border-accent object-cover shrink-0"
+        />
+        <div class="text-center sm:text-left">
+          <h2 class="text-2xl font-bold text-text-primary mb-1">sunagimo46</h2>
+          <p class="text-text-secondary mb-3">
+            DeadlockTimesJP 運営
+          </p>
+          <span
+            class="inline-block px-3 py-1 mb-1 text-sm rounded-full bg-accent-subtle text-accent border border-accent/30"
+          >
+            Phantom 帯
+          </span>
+          <p>
+            ランクは <strong class="text-text-primary">Phantom</strong> のあたりをうろうろしていて、正直あんまり上手ではありません。</br>
+            よく使うヒーローは <strong class="text-text-primary">Seven</strong>、<strong class="text-text-primary">Viscous</strong>、<strong class="text-text-primary">Warden</strong> など、比較的シンプルなヒーローが中心です。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 自己紹介 -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-4 text-text-primary border-l-4 border-accent pl-3">
+       ブログについて
+      </h2>
+      <div class="bg-bg-card border border-border rounded-xl p-6 space-y-4 text-text-secondary leading-relaxed">
+        <ul class="space-y-2 ml-1">
+          <li class="flex items-start gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-patch-notes mt-2 shrink-0"></span>
+            <span><strong class="text-text-primary">パッチノート解説</strong> ─ アップデート内容を実戦への影響とともにわかりやすくまとめます</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-hero-guide mt-2 shrink-0"></span>
+            <span><strong class="text-text-primary">ヒーローガイド</strong> ─ 各ヒーローの立ち回りやビルドを解説します</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-tactics mt-2 shrink-0"></span>
+            <span><strong class="text-text-primary">戦術・攻略記事</strong> ─ レーニングやチームプレイなど、幅広い知識をカバーします</span>
+          </li>
+        </ul>
+        <p>
+          記事の内容は、<strong class="text-text-primary">ETERNUSランク帯のプレイヤー</strong>のYouTube動画や記事を参考にしつつ、自分なりに噛み砕いてまとめています。
+          トップレベルの知見をできるだけわかりやすく伝えることを目指しています。
+        </p>
+        <p>
+          記事の内容に誤りがあったり、ご意見があれば X で気軽にご連絡ください。
+        </p>
+      </div>
+    </section>
+
+    <!-- YouTube配信 -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-4 text-text-primary border-l-4 border-accent pl-3">
+        YouTube 配信
+      </h2>
+      <div class="bg-bg-card border border-border rounded-xl p-6 space-y-4 text-text-secondary leading-relaxed">
+        <p>
+          YouTubeで<strong class="text-text-primary">ほぼ毎日 20:00〜22:00</strong> に Deadlock の配信をしています。
+        </p>
+        <p>
+          配信中は気軽にコメントしてもらえると嬉しいです。
+        </p>
+        <a
+          href="https://www.youtube.com/@sunagimo46"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 mt-2 px-5 py-3 bg-[#ff0000]/10 border border-[#ff0000]/30 text-[#ff6b6b] rounded-lg hover:bg-[#ff0000]/20 transition-colors"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814Z"
+            ></path>
+            <path fill="#fff" d="m9.545 15.568 6.272-3.568-6.272-3.568v7.136Z"
+            ></path>
+          </svg>
+          @sunagimo46
+        </a>
+      </div>
+    </section>
+
+    <!-- SNSリンク -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-4 text-text-primary border-l-4 border-accent pl-3">
+        SNS
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <a
+          href="https://www.youtube.com/@sunagimo46"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-3 bg-bg-card border border-border rounded-xl p-5 hover:border-border-hover hover:bg-bg-hover transition-colors group"
+        >
+          <svg
+            class="w-8 h-8 text-[#ff6b6b] shrink-0"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814Z"
+            ></path>
+            <path
+              fill="#fff"
+              d="m9.545 15.568 6.272-3.568-6.272-3.568v7.136Z"></path>
+          </svg>
+          <div>
+            <p
+              class="font-bold text-text-primary group-hover:text-accent transition-colors"
+            >
+              YouTube
+            </p>
+            <p class="text-sm text-text-muted">@sunagimo46</p>
+          </div>
+        </a>
+        <a
+          href="https://x.com/sunagimo46"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-3 bg-bg-card border border-border rounded-xl p-5 hover:border-border-hover hover:bg-bg-hover transition-colors group"
+        >
+          <svg
+            class="w-8 h-8 text-text-primary shrink-0"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+            ></path>
+          </svg>
+          <div>
+            <p
+              class="font-bold text-text-primary group-hover:text-accent transition-colors"
+            >
+              X (Twitter)
+            </p>
+            <p class="text-sm text-text-muted">@sunagimo46</p>
+          </div>
+        </a>
+      </div>
+    </section>
+  </div>
+</Layout>
