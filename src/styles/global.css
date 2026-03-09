@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "@fontsource-variable/noto-sans-jp";
 @plugin "@tailwindcss/typography";
 
 /*
@@ -27,7 +26,7 @@
   --color-border: #2e2e3a;
   --color-border-hover: #3e3e4e;
 
-  --font-sans: "Noto Sans JP Variable", system-ui, sans-serif;
+  --font-sans: "Noto Sans JP", system-ui, sans-serif;
 }
 
 details summary::-webkit-details-marker {
