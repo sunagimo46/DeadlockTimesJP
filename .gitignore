@@ -32,3 +32,5 @@ __pycache__/
 
 # 字幕ファイル（ローカル作業ファイル）
 transcripts/
+
+/updatenote/
